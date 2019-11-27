@@ -63,19 +63,12 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 />
-            <EditText
-                android:hint="@string/hint6"
-                android:id="@+id/txtinput6"
-                android:inputType="text"
-                android:layout_below="@+id/txtinput5"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                />
+
             <EditText
                 android:hint="@string/hint7"
-                android:id="@+id/txtinput7"
+                android:id="@+id/txtinput6"
                 android:inputType="textPostalAddress"
-                android:layout_below="@+id/txtinput6"
+                android:layout_below="@+id/txtinput5"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 />
@@ -83,7 +76,7 @@
             <Button
 
                 android:id="@+id/btdone"
-                android:layout_below="@+id/txtinput7"
+                android:layout_below="@+id/txtinput6"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

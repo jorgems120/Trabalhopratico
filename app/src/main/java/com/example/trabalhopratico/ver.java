@@ -21,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.trabalhopratico.db.Contrato;
 import com.example.trabalhopratico.db.DB;
+import com.example.trabalhopratico.entities.Contacto;
 
 import org.json.JSONException;
 import org.json.JSONObject;

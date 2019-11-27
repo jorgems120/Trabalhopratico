@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -46,6 +47,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.media.CamcorderProfile.get;
 
@@ -174,34 +177,149 @@ public class MainActivity extends AppCompatActivity  {
                 break;
 
                 case R.id.orgAZ:
-                c = db.query(false, Contrato.Contacto.TABLE_NAME, Contrato.Contacto.PROJECTION,
-                        Contrato.Contacto.COLUMN_ID_USER + " = ?", new String[]{id_user+""},
-                        null, null,
-                        Contrato.Contacto.COLUMN_NOME + " ASC", null);
-                madapter = new MyCursorAdapter(MainActivity.this, c);
-                listView.setAdapter(madapter);
-                break;
+                    if(!ap.isEmpty()) {
+                        ap.clear();
+                    }
 
+                    String url = "https://trabalhopratico3.000webhostapp.com/myslim/api/ordemaz/" + id_user;
+
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                            (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        JSONArray arr = response.getJSONArray("DATA");
+                                        for (int i = 0; i < arr.length(); i++) {
+                                            JSONObject obj = arr.getJSONObject(i);
+
+                                            Contacto p = new Contacto(obj.getInt("id"), obj.getString("nome"), obj.getString("numero"), obj.getString("idade"), obj.getString("email"),
+                                                    obj.getString("profissao"), obj.getString("codpostal"), obj.getString("genero"), obj.getString("localidade_id"));
+
+                                            ap.add(p);
+                                        }
+                                        CustomArrayAdapter itemsAdapter = new CustomArrayAdapter(MainActivity.this, ap);
+                                        ((ListView) listView.findViewById(R.id.lista)).setAdapter(itemsAdapter);
+                                    } catch (JSONException ex) {
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                                    Log.d("Erro", error.toString());
+                                }
+                            });
+                    MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest);
+
+                    break;
             case R.id.orgZA:
-                c = db.query(false, Contrato.Contacto.TABLE_NAME, Contrato.Contacto.PROJECTION,
-                        Contrato.Contacto.COLUMN_ID_USER + " = ?", new String[]{id_user+""},
-                        null, null,
-                        Contrato.Contacto.COLUMN_NOME + " DESC", null);
-                madapter = new MyCursorAdapter(MainActivity.this, c);
-                listView.setAdapter(madapter);
+                if(!ap.isEmpty()) {
+                    ap.clear();
+                }
+
+                String url1 = "https://trabalhopratico3.000webhostapp.com/myslim/api/ordemza/" + id_user;
+
+                JsonObjectRequest jsObjRequest1 = new JsonObjectRequest
+                        (Request.Method.GET, url1, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray arr = response.getJSONArray("DATA");
+                                    for (int i = 0; i < arr.length(); i++) {
+                                        JSONObject obj = arr.getJSONObject(i);
+
+                                        Contacto p = new Contacto(obj.getInt("id"), obj.getString("nome"), obj.getString("numero"), obj.getString("idade"), obj.getString("email"),
+                                                obj.getString("profissao"), obj.getString("codpostal"), obj.getString("genero"), obj.getString("localidade_id"));
+
+                                        ap.add(p);
+                                    }
+                                    CustomArrayAdapter itemsAdapter = new CustomArrayAdapter(MainActivity.this, ap);
+                                    ((ListView) listView.findViewById(R.id.lista)).setAdapter(itemsAdapter);
+                                } catch (JSONException ex) {
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                                Log.d("Erro", error.toString());
+                            }
+                        });
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest1);
                 break;
 
             case R.id.younger:
-                c = db.rawQuery("select * from " + Contrato.Contacto.TABLE_NAME + " where " + Contrato.Contacto.COLUMN_IDADE +
-                        " < '21' " + " AND " + Contrato.Contacto.COLUMN_ID_USER + " = ?", new String[]{id_user+""});
-                madapter = new MyCursorAdapter(MainActivity.this, c);
-                listView.setAdapter(madapter);
+                if(!ap.isEmpty()) {
+                    ap.clear();
+                }
+
+                String url2 = "https://trabalhopratico3.000webhostapp.com/myslim/api/ordeme21/" + id_user;
+
+                JsonObjectRequest jsObjRequest2 = new JsonObjectRequest
+                        (Request.Method.GET, url2, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray arr = response.getJSONArray("DATA");
+                                    for (int i = 0; i < arr.length(); i++) {
+                                        JSONObject obj = arr.getJSONObject(i);
+
+                                        Contacto p = new Contacto(obj.getInt("id"), obj.getString("nome"), obj.getString("numero"), obj.getString("idade"), obj.getString("email"),
+                                                obj.getString("profissao"), obj.getString("codpostal"), obj.getString("genero"), obj.getString("localidade_id"));
+
+                                        ap.add(p);
+                                    }
+                                    CustomArrayAdapter itemsAdapter = new CustomArrayAdapter(MainActivity.this, ap);
+                                    ((ListView) listView.findViewById(R.id.lista)).setAdapter(itemsAdapter);
+                                } catch (JSONException ex) {
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                                Log.d("Erro", error.toString());
+                            }
+                        });
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest2);
+
+
                 break;
             case R.id.older:
-                c = db.rawQuery("select * from " + Contrato.Contacto.TABLE_NAME + " where " + Contrato.Contacto.COLUMN_IDADE +
-                        " >= '21' " + " AND " + Contrato.Contacto.COLUMN_ID_USER + " = ?", new String[]{id_user+""});
-                madapter = new MyCursorAdapter(MainActivity.this, c);
-                listView.setAdapter(madapter);
+                if(!ap.isEmpty()) {
+                    ap.clear();
+                }
+
+                String url3 = "https://trabalhopratico3.000webhostapp.com/myslim/api/ordem21/" + id_user;
+
+                JsonObjectRequest jsObjRequest3 = new JsonObjectRequest
+                        (Request.Method.GET, url3, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray arr = response.getJSONArray("DATA");
+                                    for (int i = 0; i < arr.length(); i++) {
+                                        JSONObject obj = arr.getJSONObject(i);
+
+                                        Contacto p = new Contacto(obj.getInt("id"), obj.getString("nome"), obj.getString("numero"), obj.getString("idade"), obj.getString("email"),
+                                                obj.getString("profissao"), obj.getString("codpostal"), obj.getString("genero"), obj.getString("localidade_id"));
+
+                                        ap.add(p);
+                                    }
+                                    CustomArrayAdapter itemsAdapter = new CustomArrayAdapter(MainActivity.this, ap);
+                                    ((ListView) listView.findViewById(R.id.lista)).setAdapter(itemsAdapter);
+                                } catch (JSONException ex) {
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                                Log.d("Erro", error.toString());
+                            }
+                        });
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest3);
+
                 break;
 
                 default:
@@ -220,15 +338,15 @@ public class MainActivity extends AppCompatActivity  {
 
         AdapterView.AdapterContextMenuInfo info =(AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int index =info.position;
-        c.moveToPosition(index);
-        int id_pessoa = c.getInt(c.getColumnIndex(Contrato.Contacto._ID));
+        final Contacto p = ap.get(index);
+        Integer id_pess = p.getId();
 
         switch (item.getItemId()){
             case R.id.edit:
-                EditBox(id_pessoa);
+                EditBox(id_pess);
                 return true;
             case R.id.remove:
-                RemoveConfirmationBox(id_pessoa);
+                RemoveConfirmationBox(id_pess);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -236,7 +354,7 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    public void RemoveConfirmationBox(final int id){
+    public void RemoveConfirmationBox(final int id_pess){
 
         AlertDialog.Builder a_Builder = new AlertDialog.Builder(MainActivity.this);
         a_Builder.setMessage(getResources().getString(R.string.Aviso))
@@ -244,9 +362,23 @@ public class MainActivity extends AppCompatActivity  {
             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    db.delete(Contrato.Contacto.TABLE_NAME, Contrato.Contacto._ID + " = ?", new String[]{id+""});
+                    String url = "https://trabalhopratico3.000webhostapp.com/myslim/api/contactod/" + id_pess;
+
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                            (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(MainActivity.this, getResources().getString(R.string.Aviso4) , Toast.LENGTH_SHORT).show();
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest);
+
                     onResume();
-                    Toast.makeText(MainActivity.this,  getResources().getString(R.string.Aviso4) , Toast.LENGTH_SHORT).show();
                 }
             })
            .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
@@ -261,7 +393,7 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    public void EditBox(final int id_pessoa){
+    public void EditBox(final int id_pess){
         final Dialog dialog=new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.input_box);
         TextView txtMessage=(TextView)dialog.findViewById(R.id.txtmessage);
@@ -272,45 +404,86 @@ public class MainActivity extends AppCompatActivity  {
         final EditText editText4=(EditText)dialog.findViewById(R.id.txtinput4);
         final EditText editText5=(EditText)dialog.findViewById(R.id.txtinput5);
         final EditText editText6=(EditText)dialog.findViewById(R.id.txtinput6);
-        final EditText editText7=(EditText)dialog.findViewById(R.id.txtinput7);
-        cursor = db.query(false, Contrato.Contacto.TABLE_NAME, Contrato.Contacto.PROJECTION,
-                Contrato.Contacto._ID + " = ?", new String[]{id_pessoa+""},
-                null, null,
-                null, null);
-        cursor.moveToFirst();
-        editText.setText(cursor.getString(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_NOME)));
-        editText2.setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_NUMERO))));
-        editText3.setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_IDADE))));
-        editText4.setText(cursor.getString(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_EMAIL)));
-        editText5.setText(cursor.getString(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_PROFISSAO)));
-        editText6.setText(cursor.getString(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_LOCALIDADE)));
-        editText7.setText(cursor.getString(cursor.getColumnIndexOrThrow(Contrato.Contacto.COLUMN_CODPOSTAL)));
+
+        String url = "https://trabalhopratico3.000webhostapp.com/myslim/api/contacto/" + id_pess;
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            editText.setText(response.getString("nome"));
+                            editText2.setText(response.getString("numero"));
+                            editText3.setText(response.getString("idade"));
+                            editText4.setText(response.getString("email"));
+                            editText5.setText(response.getString("profissao"));
+                            editText6.setText(response.getString("codpostal"));
+                        } catch (JSONException ex) {
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Erro", error.toString());
+                    }
+                });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest);
 
         Button bt=(Button)dialog.findViewById(R.id.btdone);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContentValues cv = new ContentValues();
+                String url = "https://trabalhopratico3.000webhostapp.com/myslim/api/contactoe/" + id_pess;
+
+                Map<String, String> jsonParams = new HashMap<String, String>();
+
+                jsonParams.put("nome", editText.getText().toString());
+                jsonParams.put("numero", editText2.getText().toString());
+                jsonParams.put("idade", editText3.getText().toString());
+                jsonParams.put("email", editText4.getText().toString());
+                jsonParams.put("profissao", editText5.getText().toString());
+                jsonParams.put("codpostal", editText6.getText().toString());
 
 
-                if( editText.getText().toString().equals("") || editText2.getText().toString().equals("") || editText3.getText().toString().equals(""))
-                {
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.Aviso2), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    cv.put(Contrato.Contacto.COLUMN_NOME, editText.getText().toString());
-                    cv.put(Contrato.Contacto.COLUMN_NUMERO, Integer.parseInt(editText2.getText().toString()));
-                    cv.put(Contrato.Contacto.COLUMN_IDADE, Integer.parseInt(editText3.getText().toString()));
-                    cv.put(Contrato.Contacto.COLUMN_EMAIL, editText4.getText().toString());
-                    cv.put(Contrato.Contacto.COLUMN_PROFISSAO, editText5.getText().toString());
-                    cv.put(Contrato.Contacto.COLUMN_LOCALIDADE, editText6.getText().toString());
-                    cv.put(Contrato.Contacto.COLUMN_CODPOSTAL, editText7.getText().toString());
-                    db.update(Contrato.Contacto.TABLE_NAME, cv, Contrato.Contacto._ID + " = ?", new String[]{id_pessoa+""});
-                    onResume();
-                    dialog.dismiss();
-                    Toast.makeText(MainActivity.this,  getResources().getString(R.string.Aviso3) , Toast.LENGTH_SHORT).show();
-                }
+                // Formulate the request and handle the response.
+                JsonObjectRequest putRequest = new JsonObjectRequest
+                        (Request.Method.POST, url, new JSONObject(jsonParams), new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try{
+                                    if (response.getBoolean("status")) {
+                                        Toast.makeText(MainActivity.this, response.getString("MSG"), Toast.LENGTH_SHORT).show();
+                                    } else{
+                                        Toast.makeText(MainActivity.this, response.getString("MSG"), Toast.LENGTH_SHORT).show();
+                                    }
+                                    onResume();
+                                    dialog.dismiss();
+                                    Toast.makeText(MainActivity.this,  getResources().getString(R.string.Aviso3) , Toast.LENGTH_SHORT).show();
+
+                                }
+                                catch(JSONException ex){
+                                    Toast.makeText(MainActivity.this, ex.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                Log.d("Erro", error.toString());
+                            }
+                        }) {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("User-agent", System.getProperty("http.agent"));
+                        return headers;
+                    }
+                };
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(putRequest);
             }
+
         });
         dialog.show();
     }

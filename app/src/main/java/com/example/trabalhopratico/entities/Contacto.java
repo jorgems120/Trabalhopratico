@@ -3,51 +3,38 @@ package com.example.trabalhopratico.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Contacto implements Parcelable {
-    public String nome;
-    public String numero;
-    public String idade;
-    public String email;
-    public String profissao;
-    public String localidade;
-    public String codpostal;
+import java.io.Serializable;
 
-    public Contacto(String nome, String numero, String idade,
-                    String email, String profissao, String localidade, String codpostal){
+public class Contacto implements Serializable {
+    private Integer id;
+    private String nome;
+    private String numero;
+    private String idade;
+    private String email;
+    private String profissao;
+    private String codpostal;
+    private String genero;
+    private String localidade_id;
 
+    public Contacto(Integer id, String nome, String numero, String idade,
+                    String email, String profissao, String codpostal, String genero, String localidade_id){
+
+        this.id= id;
         this.nome= nome;
         this.numero=numero;
         this.idade=idade;
         this.email=email;
         this.profissao=profissao;
-        this.localidade=localidade;
         this.codpostal=codpostal;
+        this.genero=genero;
+        this.localidade_id=localidade_id;
 
 
     }
 
+    public Integer getId() { return id; }
 
-    protected Contacto(Parcel in) {
-        nome = in.readString();
-        numero = in.readString();
-        idade = in.readString();
-        email = in.readString();
-        profissao = in.readString();
-        localidade = in.readString();
-        codpostal = in.readString();
-    }
-
-    public static final Creator<Contacto> CREATOR = new Creator<Contacto>() {
-        @Override
-        public Contacto createFromParcel(Parcel in) {
-            return new Contacto(in);
-        }
-
-        @Override
-        public Contacto[] newArray(int size) {
-            return new Contacto[size];
-        }
-    };
+    public String getLocalidade_id() {return localidade_id;}
 
     public String getnome() {
         return nome;
@@ -69,11 +56,21 @@ public class Contacto implements Parcelable {
         return profissao;
     }
 
-    public String getLocalidade() { return localidade;}
-
     public String getCodpostal() {
         return codpostal;
     }
+
+    public String getGenero() {return genero; }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public void setLocalidade_id(String localidade_id) {this.localidade_id= localidade_id;}
 
     public void setNome(String nome){this.nome = nome;}
 
@@ -85,23 +82,6 @@ public class Contacto implements Parcelable {
 
     public void setProfissao(String profissao){this.profissao = profissao;}
 
-    public void setLocalidade(String localidade){this.localidade = localidade;}
-
     public void setCodpostal(String codpostal){this.codpostal = codpostal;}
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(nome);
-        dest.writeString(numero);
-        dest.writeString(idade);
-        dest.writeString(email);
-        dest.writeString(profissao);
-        dest.writeString(localidade);
-        dest.writeString(codpostal);
-    }
 }

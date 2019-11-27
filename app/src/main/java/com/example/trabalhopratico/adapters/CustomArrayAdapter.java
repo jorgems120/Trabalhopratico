@@ -29,7 +29,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Contacto> {
         ((TextView) convertView.findViewById(R.id.nome)).setText(p.getnome());
         ((TextView) convertView.findViewById(R.id.numero)).setText(p.getnumero());
         ((TextView) convertView.findViewById(R.id.idade)).setText(p.getidade());
-        ((TextView) convertView.findViewById(R.id.localidade)).setText(p.getLocalidade());
+
 
         return convertView;
 

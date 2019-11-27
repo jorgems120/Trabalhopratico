@@ -17,6 +17,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.trabalhopratico.adapters.CustomArrayAdapter;
 import com.example.trabalhopratico.adapters.MyCursorAdapter;
 import com.example.trabalhopratico.db.Contrato;
@@ -36,12 +41,16 @@ import com.example.trabalhopratico.db.DB;
 import com.example.trabalhopratico.entities.Contacto;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import static android.media.CamcorderProfile.get;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
-
+public class MainActivity extends AppCompatActivity  {
+    ArrayList<Contacto> ap = new ArrayList<>();
    DB mDbHelper;
    SQLiteDatabase db;
    Cursor c, cursor;
@@ -50,17 +59,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
    ListView listView;
    String user_name;
    int id_user;
-   private SensorManager mSensorManager;
-   private Sensor mProximity;
-   private static final int SENSOR_SENSITIVITY = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mSensorManager = (SensorManager) MainActivity.this.getSystemService(Context.SENSOR_SERVICE);
-        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         mDbHelper = new DB(MainActivity.this);
         db = mDbHelper.getReadableDatabase();
@@ -74,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                c.moveToPosition(position);
-                int id_contacto = c.getInt(c.getColumnIndex(Contrato.Contacto._ID));
+                Contacto vp = ap.get(position);
+                int id_contacto = vp.getId();
                 Intent intent = new Intent(MainActivity.this, ver.class);
                 intent.putExtra("ver",id_contacto);
                 startActivity(intent);
@@ -98,16 +101,47 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onResume(){
         super.onResume();
 
-        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+        if(!ap.isEmpty()) {
+            ap.clear();
+        }
 
-        getCursor();
-        madapter = new MyCursorAdapter(MainActivity.this, c);
-        listView.setAdapter(madapter);
+        String url = "https://trabalhopratico3.000webhostapp.com/myslim/api/ordemins/" + id_user;
+
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray arr = response.getJSONArray("DATA");
+                            for (int i = 0; i < arr.length(); i++) {
+                                JSONObject obj = arr.getJSONObject(i);
+
+                                Contacto p = new Contacto(obj.getInt("id"), obj.getString("nome"), obj.getString("numero"), obj.getString("idade"), obj.getString("email"),
+                                        obj.getString("profissao"), obj.getString("codpostal"), obj.getString("genero"), obj.getString("localidade_id"));
+
+                                ap.add(p);
+                            }
+                            CustomArrayAdapter itemsAdapter = new CustomArrayAdapter(MainActivity.this, ap);
+                            ((ListView) listView.findViewById(R.id.lista)).setAdapter(itemsAdapter);
+                        } catch (JSONException ex) {
+                        }
+                        //Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d("Erro", error.toString());
+                    }
+                });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest);
+
+
     }
 
     public void onPause(){
         super.onPause();
-        mSensorManager.unregisterListener(this);
     }
 
     public void getCursor(){
@@ -281,44 +315,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         dialog.show();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (cursor!=null) {
-            cursor.close();
-        }
-        if (c!=null) {
-            c.close();
-        }
-
-        if (db.isOpen()) {
-            db.close();
-            db = null;
-        }
-    }
 
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if( event.sensor.getType() == Sensor.TYPE_PROXIMITY)
-        {
-            Toast.makeText(MainActivity.this, ""+event.values[0],Toast.LENGTH_SHORT).show();
-            if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY){
-                c = db.query(false, Contrato.Contacto.TABLE_NAME, Contrato.Contacto.PROJECTION,
-                        Contrato.Contacto.COLUMN_ID_USER + " = ?", new String[]{id_user+""},
-                        null, null,
-                        Contrato.Contacto._ID + " DESC", "10");
-
-                   madapter = new MyCursorAdapter(MainActivity.this, c);
-                   listView.setAdapter(madapter);
-
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 }

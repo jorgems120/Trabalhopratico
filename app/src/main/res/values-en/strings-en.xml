@@ -52,6 +52,14 @@
 
     <string name="erro1">This name is already registed!</string>
     <string name="erro2">Few Characters(min 6)</string>
+    <string name="erro3">Passwords dont match</string>
+    <string name="erro4">Wrong username or password!</string>
+
+    <string name="Localidade1">Localidade</string>
+    <string name="Lisboa">Lisboa</string>
+    <string name="Porto">Porto</string>
+    <string name="Viana">Viana do castelo</string>
+    <string name="Braga">Braga</string>
 
 
 </resources>

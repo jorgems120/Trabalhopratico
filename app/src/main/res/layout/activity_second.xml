@@ -64,14 +64,6 @@
         android:hint="@string/hint5"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/localidade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="@string/hint6"
-        android:inputType="text" />
 
     <EditText
         android:id="@+id/codpostal"
@@ -81,6 +73,14 @@
         android:layout_marginRight="20dp"
         android:hint="@string/hint7"
         android:inputType="textPostalAddress" />
+
+    <Spinner
+        android:id="@+id/localidade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:spinnerMode="dropdown"/>
 
     <Spinner
         android:id="@+id/gen"

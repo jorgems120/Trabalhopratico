@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Lista de Contactos</string>
+    <string name="bemvindo">Criar Contacto</string>
+    <string name="criar1">Criar User</string>
+    <string name="informacao">Informaçao do Contacto</string>
+    <string name="campos">Campos Obrigatorios</string>
+
+    <string name="hint1">Insira o seu Nome(*)</string>
+    <string name="hint2">Insira o seu Numero(*)</string>
+    <string name="hint3">Insira a sua Idade(*)</string>
+    <string name="hint4">Insira o seu Email</string>
+    <string name="hint5">Insira a sua Profissao</string>
+    <string name="hint6">Insira a sua Localidade</string>
+    <string name="hint7">Insira a sua Codigo Postal</string>
+
+    <string name="nome">Nome</string>
+    <string name="numero">Numero</string>
+    <string name="idade">Idade</string>
+    <string name="email">Email</string>
+    <string name="profissao">Profissao</string>
+    <string name="localidade">Localidade</string>
+    <string name="codpostal">Codigo Postal</string>
+    <string name="genero">Genero</string>
+
+    <string name="Criar">Criar</string>
+    <string name="Entrar">Entrar</string>
+    <string name="Editar">Editar</string>
+    <string name="Remover">Remover</string>
+    <string name="voltar">Voltar</string>
+
+    <string name="Aviso">Tem a certeza que deseja remover este contacto?</string>
+    <string name="Aviso2">Precisa de preencher os campos com (*)!</string>
+    <string name="Aviso3">Editado!</string>
+    <string name="Aviso4">Removido!</string>
+    <string name="criado">Contacto Criado!</string>
+
+    <string name="username">Insira o seu username</string>
+    <string name="password">Insira a sua password</string>
+    <string name="cpassword">Confirma a sua password</string>
+
+    <string name="login">Login</string>
+    <string name="registar">Registar</string>
+    <string name="logout">Logout</string>
+
+    <string name="ZA">Z-A</string>
+    <string name="AZ">A-Z</string>
+    <string name="Older">21 anos ou mais</string>
+    <string name="Younger">Menos de 21 anos</string>
+    <string name="First">Primeiro - Ultimo</string>
+
+
+    <string name="erro1">Este nome já está registado!</string>
+    <string name="erro2">Poucos caracteres(min 6)</string>
+
+
+</resources>

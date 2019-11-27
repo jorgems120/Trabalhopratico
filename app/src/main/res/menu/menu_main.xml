@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.MainActivity">
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_sort"
+        android:title="SORT"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_search_black_24dp">
+        <menu>
+            <item android:id="@+id/GList"
+                android:title="@string/First" />
+            <item android:id="@+id/orgAZ"
+                android:title="@string/AZ" />
+            <item android:id="@+id/orgZA"
+                android:title="@string/ZA" />
+            <item android:id="@+id/younger"
+                android:title="@string/Younger" />
+            <item android:id="@+id/older"
+                android:title="@string/Older" />
+        </menu>
+    </item>
+
+
+</menu>

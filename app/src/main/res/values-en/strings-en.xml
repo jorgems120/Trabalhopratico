@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Contacts List</string>
+    <string name="bemvindo">Create Contact</string>
+    <string name="criar1">Create User</string>
+    <string name="informacao">Contact Information</string>
+    <string name="campos">Campos Obrigatorios</string>
+
+    <string name="hint1">Enter your name(*)</string>
+    <string name="hint2">Enter your number(*)</string>
+    <string name="hint3">Enter your age(*)</string>
+    <string name="hint4">Enter your email</string>
+    <string name="hint5">Enter your profession</string>
+    <string name="hint6">Enter your locality</string>
+    <string name="hint7">Enter your Postal Code</string>
+
+    <string name="nome">Name</string>
+    <string name="numero">Number</string>
+    <string name="idade">Age</string>
+    <string name="email">Email</string>
+    <string name="profissao">Profession</string>
+    <string name="localidade">Locality</string>
+    <string name="codpostal">Postal Code</string>
+    <string name="genero">Gender</string>
+
+    <string name="Criar">Create</string>
+    <string name="Entrar">Enter</string>
+    <string name="Editar">Edit</string>
+    <string name="Remover">Remove</string>
+    <string name="voltar">Back</string>
+
+    <string name="Aviso">Are you sure you want to remove that contact?</string>
+    <string name="Aviso2">You need to fill the camps with(*)!</string>
+    <string name="Aviso3">Edited!</string>
+    <string name="Aviso4">Removed!</string>
+    <string name="criado">Contact Created!</string>
+
+    <string name="username">Enter your username</string>
+    <string name="password">Enter your password</string>
+    <string name="cpassword">Confirm your password</string>
+
+    <string name="login">Login</string>
+    <string name="registar">Register</string>
+    <string name="logout">Logout</string>
+
+    <string name="ZA">Z-A</string>
+    <string name="AZ">A-Z</string>
+    <string name="Older">21 or Older</string>
+    <string name="Younger">Younger than 21</string>
+    <string name="First">First-Last</string>
+
+    <string name="erro1">This name is already registed!</string>
+    <string name="erro2">Few Characters(min 6)</string>
+
+
+</resources>

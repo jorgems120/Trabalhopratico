@@ -147,13 +147,6 @@ public class MainActivity extends AppCompatActivity  {
         super.onPause();
     }
 
-    public void getCursor(){
-
-        c = db.rawQuery("select * from " + Contrato.Contacto.TABLE_NAME + " where " + Contrato.Contacto.COLUMN_ID_USER +
-                " = ?", new String[]{id_user+""});
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -445,7 +438,6 @@ public class MainActivity extends AppCompatActivity  {
                 jsonParams.put("codpostal", editText6.getText().toString());
 
 
-                // Formulate the request and handle the response.
                 JsonObjectRequest putRequest = new JsonObjectRequest
                         (Request.Method.POST, url, new JSONObject(jsonParams), new Response.Listener<JSONObject>() {
                             @Override

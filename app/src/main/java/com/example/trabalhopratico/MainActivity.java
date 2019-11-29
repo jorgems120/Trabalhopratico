@@ -52,7 +52,7 @@ import java.util.Map;
 
 import static android.media.CamcorderProfile.get;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements SensorEventListener  {
     ArrayList<Contacto> ap = new ArrayList<>();
    DB mDbHelper;
    SQLiteDatabase db;
@@ -62,11 +62,17 @@ public class MainActivity extends AppCompatActivity  {
    ListView listView;
    String user_name;
    int id_user;
+   private SensorManager mSensorManager;
+   private Sensor mProximity;
+   private static final int SENSOR_SENSITIVITY = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSensorManager = (SensorManager) MainActivity.this.getSystemService(Context.SENSOR_SERVICE);
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         mDbHelper = new DB(MainActivity.this);
         db = mDbHelper.getReadableDatabase();
@@ -103,6 +109,8 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onResume(){
         super.onResume();
+
+        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
 
         if(!ap.isEmpty()) {
             ap.clear();
@@ -145,6 +153,7 @@ public class MainActivity extends AppCompatActivity  {
 
     public void onPause(){
         super.onPause();
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -478,6 +487,52 @@ public class MainActivity extends AppCompatActivity  {
 
         });
         dialog.show();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if( event.sensor.getType() == Sensor.TYPE_PROXIMITY)
+        {
+            if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY){
+                if(!ap.isEmpty()) {
+                    ap.clear();
+                }
+
+                String url = "https://trabalhopratico3.000webhostapp.com/myslim/api/ordeml10/" + id_user;
+
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray arr = response.getJSONArray("DATA");
+                                    for (int i = 0; i < arr.length(); i++) {
+                                        JSONObject obj = arr.getJSONObject(i);
+
+                                        Contacto p = new Contacto(obj.getInt("id"), obj.getString("nome"), obj.getString("numero"), obj.getString("idade"), obj.getString("email"),
+                                                obj.getString("profissao"), obj.getString("codpostal"), obj.getString("genero"), obj.getString("localidade_id"));
+
+                                        ap.add(p);
+                                    }
+                                    CustomArrayAdapter itemsAdapter = new CustomArrayAdapter(MainActivity.this, ap);
+                                    ((ListView) listView.findViewById(R.id.lista)).setAdapter(itemsAdapter);
+                                } catch (JSONException ex) {
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Erro", error.toString());
+                            }
+                        });
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsObjRequest);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
 

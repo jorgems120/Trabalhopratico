@@ -78,6 +78,7 @@ public class PaginaEntrada extends AppCompatActivity {
                                                              editor.putInt("IDUSER", response.getInt("id"));
                                                              editor.putString("NAME", username);
                                                              editor.putString("PASSWORD", password);
+                                                             editor.putBoolean("ISLOGGEDIN", true);
                                                              editor.commit();
 
                                                              Intent main = new Intent(PaginaEntrada.this, MainActivity.class);
